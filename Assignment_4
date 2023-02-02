@@ -1,0 +1,49 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Read the provided CSV file ‘data.csv’.
+df = pd.read_csv(r'C:\Users\AshwithaGaddam\Downloads\data.csv')
+print(df.to_string())
+
+#Show the basic statistical description about the data.
+a = df.describe()
+print(a)
+
+#Check if the data has null values.
+b = df.isnull()
+print(b)
+
+
+#Replace the null values with the mean
+df['Calories'] = df['Calories'].fillna(df['Calories'].mean())
+print(df.to_string())
+
+#Select at least two columns and aggregate the data using: min, max, count, mean.
+result = df.groupby('Pulse').agg({'Calories': ['mean', 'min', 'count', 'max']})
+print("Mean, min, count and max values of Calories grouped by Pulse")
+print(result)
+
+#Filter the dataframe to select the rows with calories values between 500 and 1000.
+filter1_df = df[(df['Calories'] > 500) & (df['Calories'] < 1000)]
+print(filter1_df)
+
+#Filter the dataframe to select the rows with calories values > 500 and pulse < 100.
+filter2_df = df[(df['Calories'] > 500) & (df['Pulse'] < 100)]
+print(filter2_df)
+
+#Create a new “df_modified” dataframe that contains all the columns from df except for “Maxpulse”.
+df_modified = df[['Duration', 'Pulse', 'Calories']].copy()
+print(df_modified.to_string())
+
+#Delete the “Maxpulse” column from the main df dataframe.
+df = df.drop('Maxpulse', axis=1)
+print(df)
+
+
+#Convert the datatype of Calories column to int datatype.
+df = df.astype({'Calories': int})
+print(df.dtypes)
+
+#Using pandas create a scatter plot for the two columns (Duration and Calories).
+df.plot.scatter(x='Duration', y='Calories')
+plt.show()
